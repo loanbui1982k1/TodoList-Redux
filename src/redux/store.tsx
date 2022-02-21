@@ -10,4 +10,13 @@ const store = configureStore({
     }
 })
 
+type RootSate = ReturnType<typeof store.getState>
+export const selectTodos = (state: RootSate) => {
+    const todoList = state.todolist.filter((todo) => {
+        if (state.filters.status === 'complete') return todo.name.toLocaleLowerCase().includes(state.filters.search.toLocaleLowerCase()) && todo.complete
+        else if (state.filters.status === 'uncomplete') return todo.name.toLocaleLowerCase().includes(state.filters.search.toLocaleLowerCase()) && !todo.complete
+        else return todo.name.toLocaleLowerCase().includes(state.filters.search.toLocaleLowerCase())
+    })
+    return todoList
+}
 export default store

@@ -1,5 +1,9 @@
-import {createSlice} from '@reduxjs/toolkit'
+import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 
+interface Filter {
+  search: string,
+  status: 'all'| 'complete' | 'uncomplete'
+}
  const filtersSlice = createSlice({
     name: 'filters',
     initialState: {
@@ -7,10 +11,10 @@ import {createSlice} from '@reduxjs/toolkit'
       status: 'all',
     },
     reducers: {
-      searchFilterChange: (state,action) => {
+      searchFilterChange: (state, action: PayloadAction<string>) => {
         state.search = action.payload
         },
-      statusFilterChange: (state, action) => {
+      statusFilterChange: (state, action: PayloadAction<string>) => {
         state.status =  action.payload   
       }
     }
