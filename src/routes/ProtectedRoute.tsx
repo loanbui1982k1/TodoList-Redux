@@ -1,8 +1,7 @@
 
-import { Route, Navigate, RouteProps} from 'react-router-dom';
+import { RouteProps} from 'react-router-dom';
 import { Outlet } from 'react-router';
 import Login from '../components/login/login'
-// import Cookies from 'js-cookie';
 
 interface Props extends RouteProps {
     isAuth: boolean,

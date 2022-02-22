@@ -6,7 +6,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import filterSlice from 'redux/slices/FilterSlice'
 
 export default function Filter() {

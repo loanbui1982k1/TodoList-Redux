@@ -58,10 +58,10 @@ export default function TodoList() {
         }
         )}
       </List>
-      <div style = {{ position: 'absolute', bottom: '20vh' }}>
+      <div style = {{ position: 'absolute', bottom: '10vh' }}>
 
        <TextField sx = {{ml: '10px', mr: '20px', width: '60vw', maxWidth : '350px'}} value = {todo} onChange = {(e)=>setTodo(e.target.value)} id="fullWidth" />
-        <Button variant="contained" sx = {{top: '5px'}} onClick = {addTodo} >Thêm</Button>
+        <Button variant="contained" sx = {{top: '5px'}} disabled = {todo === ''} onClick = {addTodo} >Thêm</Button>
       </div>
     </div>
   )

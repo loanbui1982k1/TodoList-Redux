@@ -1,9 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 
-interface Filter {
-  search: string,
-  status: 'all'| 'complete' | 'uncomplete'
-}
  const filtersSlice = createSlice({
     name: 'filters',
     initialState: {

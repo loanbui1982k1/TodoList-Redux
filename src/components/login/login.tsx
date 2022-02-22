@@ -5,7 +5,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { setCookie } from 'typescript-cookie';
 import { useState } from "react";
-
 import TextField from "@mui/material/TextField";
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -15,10 +14,9 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
-import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import styles from './style.module.css'
-import { useNavigate } from "react-router";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -27,7 +25,6 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-// import PasswordField from "../form-control/passwordField/passwordField";
 
 interface FormLogin {
   username: string,
@@ -56,8 +53,9 @@ const schema = yup.object().shape({
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const [openError, setOpenError] = React.useState(false);
 
-  const handleClick = () => {
+  const handleClickLogin = () => {
     setOpen(true);
   };
 
@@ -65,14 +63,13 @@ function Login() {
     if (reason === 'clickaway') {
       return;
     }
-
+    setOpenError(false)
     setOpen(false);
   };
-  const navigate = useNavigate()
   const toggleShowPassword = () => {
     setShowPassword((x: boolean) => !x);
   };
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<FormLogin>({
+  const { register, handleSubmit, formState: { errors } } = useForm<FormLogin>({
     resolver: yupResolver(schema),
   });
   // const { enqueueSnackbar } = useSnackbar();  
@@ -83,11 +80,11 @@ function Login() {
         expires: 1 / 6,
         secure: true,
       });
-      handleClick();
+      handleClickLogin();
       window.location.reload();
       // navigate('/')
     }
-    else console.log('Fail')
+    else setOpenError(true)
   }
   return (
     <div className={styles.container}>
@@ -101,25 +98,6 @@ function Login() {
               //   onSubmit={form.handleSubmit(handleSubmit)}
               className={styles.loginForm}
             >
-
-              {/* <Controller
-                name= 'username'
-                control={form.control}
-                render={({field:{ onChange, onBlur, value} }) => (
-                  <TextField
-                    variant="outlined"
-                    label= 'Tên đăng nhập'
-                    // error={!!form.errors.}
-                    // helperText={form.errors[name]?.message}
-                    name= 'username'
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                  />
-                )}
-              /> */}
-              {/* <InputField name="username" label="Tên đăng nhập" form={form} /> */}
-              {/* <PasswordField name="password" label="Mật khẩu" form={form} /> */}
               <TextField variant="outlined" fullWidth sx={{ mb: 2 }}
                 label='Tên đăng nhập' className={styles.inputField}
                 {...register('username', { required: true })}
@@ -146,36 +124,25 @@ function Login() {
 
                 <FormHelperText> {errors.password && errors.password?.message && errors.password.message}</FormHelperText>
               </FormControl>
-              {/* <OutlinedInput
-                 sx={{ mb: 2 }}
-                className={styles.inputField}
-                label='Mật khẩu' type='password'
-                {...register('password', { required: true })}
-                error={errors.password ? true : false}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton aria-label="toggle password visibility" onClick={toggleShowPassword}>
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                helperText={errors.password && errors.password?.message && errors.password.message}
-              /> */}
               <Button
-                //disabled={isSubmitting}
                 type="submit"
                 color="primary"
                 variant="contained"
                 size="medium"
-                sx = {{mt: 2}}
+                sx={{ mt: 2 }}
               >
                 Đăng nhập
               </Button>
-              <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'right' }} open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          Đăng nhập thành công
-        </Alert>
-      </Snackbar>
+              <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'right' }} open={open} autoHideDuration={3000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                  Đăng nhập thành công
+                </Alert>
+              </Snackbar>
+              <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'right' }} open={openError} autoHideDuration={3000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+                  Mật khẩu hoặc tên đăng nhập không đúng
+                </Alert>
+              </Snackbar>
             </form>
           </div>
         </div>
